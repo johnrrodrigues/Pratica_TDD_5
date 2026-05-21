@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from core.forms import LoginForm
+from core.forms import LoginForm, LinkForm
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 
@@ -27,3 +27,15 @@ def logout(request):
 def home(request):
     context = {}
     return render(request, 'index.html', context)
+
+@login_required
+def cadastrar_link(request):
+    if request.method == "POST":
+        form = LinkForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("home")
+    else:
+        form = LinkForm()
+        
+    return render(request, 'cadastrar.html', {'form': form})

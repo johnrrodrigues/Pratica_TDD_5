@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+from core.models import LinkModel
 
 class LoginForm(ModelForm):
     class Meta:
@@ -23,6 +24,8 @@ class LoginForm(ModelForm):
                 'required': ("Informe o e-mail."),
             },
         }
+        
+
 
     def clean_email(self):
         email = self.cleaned_data['email']
@@ -46,3 +49,31 @@ class LoginForm(ModelForm):
                 raise ValidationError("Senha incorreta para o e-mail informado.")
 
             self.user = user
+            
+class LinkForm(forms.ModelForm):
+    class Meta:
+        model = LinkModel
+        fields = ('titulo', 'link', 'observacao')
+        
+        labels = {
+            'titulo': 'Título do Link:',
+            'link': 'Endereço URL:',
+            'observacao': 'Observações adicionais:',
+        }
+        
+        # Adição de widgets para estilização com classes do bootstrap
+        widgets = {
+            'titulo': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Ex: Curso gratuito de...'
+            }),
+            'link': forms.URLInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Ex: https://bluepex.ead...'
+            }),
+            'observacao': forms.Textarea(attrs={
+                'class': 'form-control', 
+                'rows': 3, 
+                'placeholder': 'Descreva brevemente o destino desse link.'
+            }),
+        }
