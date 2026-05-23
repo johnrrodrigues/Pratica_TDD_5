@@ -77,3 +77,8 @@ class LinkForm(forms.ModelForm):
                 'placeholder': 'Descreva brevemente o destino desse link.'
             }),
         }
+    def clean_link(self):
+        link = self.cleaned_data.get('link', '').strip()
+        if LinkModel.objects.filter(link=link).exclude(pk=self.instance.pk).exists():
+            raise forms.ValidationError("Este endereço URL já foi cadastrado no sistema.")
+        return link
