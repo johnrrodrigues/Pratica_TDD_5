@@ -2,10 +2,11 @@
 
 Desafio técnico para os alunos da disciplina "Desenvolvimento Web 3"
 
+---
 
+## Como executar o projeto
 
-
-No ambiente Linux:
+**Linux:**
 
 ```console
 git clone https://github.com/orlandosaraivajr/Pratica_TDD_5.git
@@ -16,47 +17,44 @@ pip install -r requirements.txt
 cd linkpedia/
 python manage.py migrate
 python manage.py test
-coverage run --source='.' manage.py test 
+coverage run --source='.' manage.py test
 coverage html
 python manage.py createsuperuser
 python manage.py runserver
 ```
 
-No ambiente Windows:
+**Windows:**
 
 ```console
 git clone https://github.com/orlandosaraivajr/Pratica_TDD_5.git
 cd Pratica_TDD_5/
 virtualenv venv
-cd venv
-cd scripts
+cd venv\scripts
 activate.bat
-cd ..
-cd ..
+cd ..\..
 pip install -r requirements.txt
 cd linkpedia/
 python manage.py migrate
 python manage.py test
-coverage run --source='.' manage.py test 
+coverage run --source='.' manage.py test
 coverage html
 python manage.py createsuperuser
 python manage.py runserver
-
 ```
 
 Crie um superusuário com as seguintes credenciais:
 
-- Username <b>aluno</b>:
-- E-mail address: <b>seu e-mail institucional</b>
-- Password: <b>fatec</b>
+- Username: **aluno**
+- E-mail: **seu e-mail institucional (@cps.sp.gov.br)**
+- Password: **fatec**
 
-### Requisitos da Sprint 1
+---
+
+## Sprint 1 — Login e Logout
 
 <img src="caso_uso.png">
 
-A expectativa do projeto é que tenha-se um cadastro de links. O que foi priorizado na primeira sprint foi o sistema de login/logout.
-O login somente pode ocorrer com o e-mail institucional @cps.sp.gov.br 
-
+A expectativa do projeto é ter um cadastro de links. O que foi priorizado na primeira sprint foi o sistema de login/logout. O login somente pode ocorrer com e-mail institucional @cps.sp.gov.br.
 
 <img src="login.png">
 
@@ -64,40 +62,75 @@ Imagem 1: Tela de Login
 
 <img src="index.png">
 
-Imagem 2: Tela index
+Imagem 2: Tela Index
 
 <img src="logout.png">
-Imagem 3: Tela logout
 
-## Requisitos para a Sprint 2
+Imagem 3: Tela de Logout
 
-Agora começa o seu desafio: desenvolver um cadastro de links com as operações de CRUD.
+---
 
-Com base no modelo implementado (ver imagem abaixo), você deve:
+## Sprint 2 — CRUD de Links
+
+Com base no modelo implementado, foram desenvolvidas as operações de CRUD completo com proteção por autenticação.
+
 <img src="model.png">
 
+✅ Formulário para o modelo `LinkModel` com validação de URL e duplicidade
 
-✅ Criar um formulário para o modelo LinkModel (pode usar Forms ou ModelForms);
+✅ Cadastrar link — somente usuários autenticados
 
-Implementar as seguintes funcionalidades:
+✅ Listar links — com busca por título, URL e observação
 
-✅ Cadastrar contato
+✅ Atualizar link — com formulário pré-preenchido
 
-✅ Listar contatos
+✅ Remover link — com confirmação via dialog
 
-✅ Atualizar contato
+✅ Todas as rotas protegidas com `@login_required`
 
-✅ Remover contato
+<img src="cadastrar.png">
 
-Proteger todas essas funcionalidades para que apenas usuários logados tenham acesso.
+Imagem 4: Tela de Cadastro
 
-Ao final da Sprint 2, o sistema deverá conter um CRUD funcional de links em Django.
+<img src="listar.png">
 
+Imagem 5: Tela de Listagem
 
-## Ajustes nos testes / novos testes
+<img src="listar_filtragem.png">
 
-O código fonte passará por atualizações para acomodar estes novos requisitos. Com isso, você deve ajudar os testes existentes e criar novos testes.
+Imagem 6: Tela de Filtragem de Links
 
-Você recebeu a sprint 1 com uma cobertura de teste acima de 90%. É esperado que ao final da sprint 2 a cobertura mantenha-se neste patamar.
+<img src="editar_listar.png">
 
-<img src="cobertura_testes.png">
+Imagem 7: Tela de Gerenciamento de Edição
+
+<img src="edicao_link.png">
+
+Imagem 8: Tela de Edição
+
+<img src="excluir_listar.png">
+
+Imagem 9: Tela de Gerenciamento de Exclusão
+
+---
+
+## Testes e Cobertura
+
+Os testes foram escritos seguindo a metodologia TDD, organizados por operação do CRUD:
+
+| Arquivo | Responsabilidade |
+|---|---|
+| `test_index.py` | Acesso à home e proteção por login |
+| `test_login_logout.py` | Autenticação e validação de e-mail institucional |
+| `test_form_login.py` | Validações do formulário de login |
+| `test_model_agenda.py` | Validações do modelo `LinkModel` |
+| `test_create.py` | Cadastro de links |
+| `test_list.py` | Listagem e busca de links |
+| `test_update.py` | Edição de links |
+| `test_delete.py` | Exclusão de links |
+
+A cobertura de testes foi mantida acima de 90% ao longo de toda a Sprint 2.
+
+<img src="cobertura_sprint2.png">
+
+Imagem 10: Cobertura de testes — Sprint 2
