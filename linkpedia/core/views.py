@@ -62,7 +62,6 @@ def listar_links(request):
 def gerenciar_edicao(request):
     busca = request.GET.get("search", "").strip()
     links = LinkModel.objects.all()
-
     if busca:
         links = links.filter(Q(titulo__icontains=busca) | Q(link__icontains=busca))
 
@@ -81,3 +80,22 @@ def editar_link(request, pk):
         form = LinkForm(instance=link)
 
     return render(request, "editar.html", {"form": form, "link": link})
+
+
+@login_required
+def gerenciar_exclusao(request):
+    busca = request.GET.get("search", "").strip()
+    links = LinkModel.objects.all()
+    if busca:
+        links = links.filter(Q(titulo__icontains=busca) | Q(link__icontains=busca))
+        
+    return render(request, "excluir_listar.html", {"links": links, "busca": busca})
+
+
+@login_required
+def excluir_link(request, pk):
+    link = get_object_or_404(LinkModel, pk=pk)
+    if request.method == "POST":
+        link.delete()
+        
+    return redirect("gerenciar_exclusao")
